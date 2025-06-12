@@ -1,6 +1,5 @@
 import asyncio
 import os
-from turtle import textinput
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -28,13 +27,31 @@ async def get_resource(
         Get specific resource content.
     """
     try:
-        result = session.read_resource(uri=resource_uri)
-        if result and result.content:
+        result = await session.read_resource(uri=resource_uri)
+        if result and result.contents:
             print(f"\nResource: {resource_uri}")
             print("Content:")
             print(result.contents[0].text)
         else:
             print("No content available!")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+async def list_prompts(session: ClientSession) -> None:
+    """
+        Execute a specific prompt.
+    """
+    try:
+        prompts_response = await session.list_prompts()
+        if prompts_response and prompts_response.prompts:
+            for prompt in prompts_response.prompts:
+                print(f"- {prompt.name}: {prompt.description}")
+                if prompt.arguments:
+                    print(f"  Arguments:")
+                    for arg in prompt.arguments:
+                        arg_name = arg.name if hasattr(arg, 'name') else arg.get('name', '')
+                        print(f"    - {arg_name}")
     except Exception as e:
         print(f"Error: {e}")
 
@@ -47,7 +64,7 @@ async def execute_prompt(
         Execute a specific prompt.
     """
     try:
-        result = session.get_prompt(prompt_name, argument=args)
+        result = await session.get_prompt(prompt_name, arguments=args)
         if result and result.messages:
             prompt_content = result.messages[0].content
 
@@ -88,7 +105,7 @@ async def run():
 
             print("\nMCP Chatbot started!")
             print("Type or queries or 'quit' to exit.")
-            print("Use @<customer_id> to search customers in that area")
+            print("Use @<customer_id> to search for customers information")
             print("Use /prompts to list available prompts")
             print("Use /prompt <name> <arg1=value1> to execute a prompt")
             while True:
@@ -101,7 +118,7 @@ async def run():
                 if query.startswith('@'):
                     customer_id = query[1:]
                     resource_uri = f"customers://{customer_id}"
-                    await get_resouce(resource_uri)
+                    await get_resource(session, resource_uri)
                     continue
 
                 # Check for /command syntax
@@ -110,7 +127,8 @@ async def run():
                     command = parts[0].lower()
 
                     if command == '/prompts':
-                        await list_prompts()
+                        await list_prompts(session)
+                        continue
                     elif command == '/prompt':
                         if len(parts) < 2:
                             print("Usage: /prompt <name> <arg1=value1> <arg2=value2>")
@@ -119,13 +137,13 @@ async def run():
                         prompt_name = parts[1]
                         args = {}
 
-                        for args[2:] in parts[2:]:
+                        for arg in parts[2:]:
                             if "=" in arg:
                                 key, value = arg.split("=", 1)
                                 args[key] = value
 
                         print(f"\nExecuting prompt...'{prompt_name}'...")
-                        query = await execute_prompt(prompt_name, args)
+                        query = await execute_prompt(session, prompt_name, args)
                     else:
                         print(f"Unknown command: {command}")
 
