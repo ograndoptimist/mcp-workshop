@@ -1,3 +1,5 @@
+import json
+
 from mcp.server.fastmcp import FastMCP
 
 
@@ -28,15 +30,15 @@ def multiply_numbers(a: float, b:float) -> float:
     return a * b 
 
 
-@mcp.resource("customers://{client_id}")
+@mcp.resource("customers://{customer_id}")
 def get_customer_info(customer_id: str) -> str:
     """
         Get detailed information about customers.
     """
     try:
-        path_customer = "data/" + customer_id + ".txt"
+        path_customer = "customers/" + customer_id + ".json"
         with open(path_customer, 'r') as file:
-            return file.read()
+            return  json.load(file)
     except FileNotFoundError:
         return "Customer not found."
 
