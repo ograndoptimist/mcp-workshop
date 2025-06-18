@@ -18,7 +18,7 @@ DATAJUD_API_KEY = os.getenv("DATAJUD_API_KEY")
 
 
 
-
+# Define MCP Tool
 def consulta_processo_numero(numero_do_processo: str) -> dict:
     """
         Consulta informações de um processo judicial a partir do seu número,
@@ -74,7 +74,7 @@ def consulta_processo_numero(numero_do_processo: str) -> dict:
         return {}
 
 
-
+# Define MCP Tool
 def lista_processos_usuario() -> dict: 
     """
         Consulta o número dos processos do usuário.
@@ -86,7 +86,7 @@ def lista_processos_usuario() -> dict:
     return dict(list=processos)
 
 
-
+# Define MCP Resource
 def get_customer_info(customer_id: str) -> str:
     """
         Get detailed information about customers.
@@ -99,7 +99,7 @@ def get_customer_info(customer_id: str) -> str:
         return "Customer not found."
     
 
-
+# Define MCP Prompt
 def generate_search_prompt(area: str, num_customers: int) -> str:
     """
         Generate a prompt for a LLM model to find and discuss customer information. 
@@ -114,5 +114,5 @@ def generate_search_prompt(area: str, num_customers: int) -> str:
 if __name__ == "__main__":
     print("Iniciando servidor MCP...")
     # Run MCP Server:
-    
+
     print("Servidor disponível!")
