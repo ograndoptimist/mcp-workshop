@@ -11,10 +11,6 @@ from langgraph.prebuilt import create_react_agent
 # Carregando variáveis de ambiente do arquivo dotenv
 load_dotenv()
 
-# Gemini API Key (Get from Google AI Studio: https://aistudio.google.com/app/apikey)
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
-os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "true"
-
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
 os.environ["LANGSMITH_PROJECT"] = "nuclea-workshop-jusdata-mcp-agent"
