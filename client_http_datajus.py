@@ -13,7 +13,7 @@ load_dotenv()
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["LANGSMITH_PROJECT"] = "nuclea-workshop-jusdata-mcp-agent"
+os.environ["LANGSMITH_PROJECT"] = "mcp-workshop-jusdata-mcp"
 
 
 async def get_resource(
