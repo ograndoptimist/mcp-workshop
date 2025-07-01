@@ -124,8 +124,6 @@ async def main():
             except Exception as e:
                 print(f"An error occurred: {e}")
                 break # Exit after fallback attempt
-        
-        return agent
 
 
 if __name__ == "__main__":
