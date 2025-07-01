@@ -8,12 +8,11 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.prebuilt import create_react_agent
 
 
-# Carregando variáveis de ambiente do arquivo dotenv
 load_dotenv()
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["LANGSMITH_PROJECT"] = "mcp-workshop-jusdata-mcp"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv('LANGCHAIN_API_KEY')
+os.environ["LANGSMITH_PROJECT"] = "mcp-workshop"
 
 
 async def get_resource(
